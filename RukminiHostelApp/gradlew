@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+VER=8.7
+DIST="$DIR/.gradle-dist/gradle-$VER"
+if [ ! -x "$DIST/bin/gradle" ]; then
+  mkdir -p "$DIR/.gradle-dist"
+  curl -L --fail --silent --show-error "https://services.gradle.org/distributions/gradle-$VER-bin.zip" -o "$DIR/.gradle-dist/gradle.zip"
+  unzip -q -o "$DIR/.gradle-dist/gradle.zip" -d "$DIR/.gradle-dist"
+fi
+exec "$DIST/bin/gradle" "$@"
